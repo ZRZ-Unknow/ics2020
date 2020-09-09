@@ -62,8 +62,8 @@ static struct {
 static int string2num(char *args){
   int n=strlen(args);
   int num=0;
-  for(int i=0;i<n;i++){
-    num+=(*(args++)-'0')*10*i;
+  for(int i=n;i>0;i--){
+    num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
   }
   return num;
 }
