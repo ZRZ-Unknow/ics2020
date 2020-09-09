@@ -40,8 +40,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
-//static int cmd_x(char *args);
-
+static int cmd_x(char *args);
 
 static struct {
   char *name;
@@ -52,15 +51,16 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "single step",cmd_si},
-  { "info","print register's status",cmd_info},
-  //{ "x","scan memory",cmd_x},
+  { "info", "print register's status",cmd_info},
+  { "x", "scan memory",cmd_x},
   /* TODO: Add more commands */
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
-static int string2num(char *args){
+static int string2num(const char *arg){
   //convert a num_string to a real num: (char*)'76'->(int)76
+  char *args=(char *)arg;
   int n=strlen(args);
   int num=0;
   for(int i=n;i>0;i--){
@@ -68,6 +68,14 @@ static int string2num(char *args){
     num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
   }
   return num;
+}
+static int cmd_x(char *args){
+  char *arg=strtok(NULL," ");
+  int n=string2num(arg);
+  if(n==-1||n==0) printf("invalid command!\n");
+  arg=strtok(NULL," ");
+  printf("%s\n",arg);
+  return 0;
 }
 
 static int cmd_info(char *args){
