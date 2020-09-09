@@ -32,6 +32,15 @@ int strcmp(const char* s1, const char* s2) {
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
+  char *ss1=s1;
+  char *ss2=s2;
+  for(int i=0;i<n;i++){
+    if(*ss1!='/0' && *ss2!='/0'){
+      if(*(ss1++)!=*(ss2++)) return -1;
+    }
+    else if(*ss1=='/0' && *ss2=='/0') break;
+    else return -1;
+  }
   return 0;
 }
 

@@ -75,6 +75,11 @@ static int cmd_x(char *args){
   if(n==-1||n==0) printf("invalid command!\n");
   arg=strtok(NULL," ");
   printf("%s\n",arg);
+  if(strncmp(arg,"0x",2)==0){
+    arg+=2;
+    int num=string2num(arg);
+    printf("%d\n",num);
+  }
   return 0;
 }
 
