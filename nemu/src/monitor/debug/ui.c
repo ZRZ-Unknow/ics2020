@@ -39,7 +39,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 static int cmd_si(char *args);
-//static int cmd_info(char *args);
+static int cmd_info(char *args);
 //static int cmd_x(char *args);
 
 
@@ -52,7 +52,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "single step",cmd_si},
-  //{ "info r","print register's status",cmd_info},
+  { "info r","print register's status",cmd_info},
   //{ "x","scan memory",cmd_x},
   /* TODO: Add more commands */
 };
@@ -68,6 +68,17 @@ static int string2num(char *args){
     num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
   }
   return num;
+}
+
+static int cmd_info(char *args){
+  char *arg=strtok(NULL," ");
+  printf("%s,%s\n",args,arg);
+  if(strcmp(arg,"r")==0) isa_reg_display();
+  else if(strcmp(arg,"w")==0){
+    TODO();
+  }
+  else printf("invalid command!\n");
+  return 0;
 }
 
 static int cmd_si(char *args){
