@@ -61,12 +61,15 @@ static struct {
 
 static int string2num(char *args){
   int n=strlen(args);
-  printf("%d\n",n);
-  return 0;
+  int num=0;
+  for(int i=0;i<n;i++){
+    num+=(*(args++)-'0')*10*i;
+  }
+  return num;
 }
 
 static int cmd_si(char *args){
-  string2num(args);
+  printf("%d\n",string2num(args));
   return 0;
 }
 
