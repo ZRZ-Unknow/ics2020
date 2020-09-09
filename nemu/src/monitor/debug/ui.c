@@ -1,7 +1,7 @@
 #include <isa.h>
 #include "expr.h"
 #include "watchpoint.h"
-
+#include <memory/paddr.h>
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -76,10 +76,12 @@ static int cmd_x(char *args){
   arg=strtok(NULL," ");
   printf("%s\n",arg);
   if(strncmp(arg,"0x",2)==0){
-    arg+=2;
-    int num=string2num(arg);
-    printf("%d\n",num);
+    paddr_t base_addr=strtol(arg,NULL,16);
+    for(int i=0;i<n;i++){
+      printf("0x%x ",paddr_read(base_addr+4*i,4));
+    }
   }
+  else printf("invalid command!\n");
   return 0;
 }
 
