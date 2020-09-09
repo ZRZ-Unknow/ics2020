@@ -74,13 +74,16 @@ static int cmd_x(char *args){
   int n=string2num(arg);
   if(n==-1||n==0) printf("invalid command!\n");
   arg=strtok(NULL," ");
-  if(strncmp(arg,"0x",2)==0){
-    paddr_t base_addr=strtol(arg,NULL,16);
-    for(int i=0;i<n;i++){
-      printf(i==(n-1)?"0x%x\n":"0x%x ",paddr_read(base_addr+4*i,4));
+  if(arg==NULL) printf("invalid command!\n");
+  else{
+    if(strncmp(arg,"0x",2)==0){
+      paddr_t base_addr=strtol(arg,NULL,16);
+      for(int i=0;i<n;i++){
+        printf(i==(n-1)?"0x%x\n":"0x%x ",paddr_read(base_addr+4*i,4));
+      }
     }
+    else printf("invalid command!\n");
   }
-  else printf("invalid command!\n");
   return 0;
 }
 
