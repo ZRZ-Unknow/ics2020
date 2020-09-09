@@ -74,7 +74,6 @@ static int cmd_x(char *args){
   int n=string2num(arg);
   if(n==-1||n==0) printf("invalid command!\n");
   arg=strtok(NULL," ");
-  printf("%s\n",arg);
   if(strncmp(arg,"0x",2)==0){
     paddr_t base_addr=strtol(arg,NULL,16);
     for(int i=0;i<n;i++){
