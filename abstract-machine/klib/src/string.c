@@ -23,6 +23,11 @@ char* strcat(char* dst, const char* src) {
 }
 
 int strcmp(const char* s1, const char* s2) {
+  char *ss1=s1;
+  char *ss2=s2;
+  while(*ss1!='/0' && *ss2!='/0'){
+    if(*(ss1++)!=*(ss2++)) return -1;
+  }
   return 0;
 }
 
