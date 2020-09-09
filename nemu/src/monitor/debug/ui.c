@@ -60,6 +60,7 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int string2num(char *args){
+  //convert a num_string to a real num: (char*)'76'->(int)76
   int n=strlen(args);
   int num=0;
   for(int i=n;i>0;i--){
@@ -69,7 +70,11 @@ static int string2num(char *args){
 }
 
 static int cmd_si(char *args){
-  printf("%d\n",string2num(args));
+  if(args==NULL)
+    cpu_exec(1);
+  else{
+    cpu_exec(string2num(args));
+  }
   return 0;
 }
 
