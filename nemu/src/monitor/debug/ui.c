@@ -64,16 +64,20 @@ static int string2num(char *args){
   int n=strlen(args);
   int num=0;
   for(int i=n;i>0;i--){
+    if(*args<'0'||*args>'9') return -1;
     num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
   }
   return num;
 }
 
 static int cmd_si(char *args){
-  if(args==NULL)
+  char *arg=strtok(NULL," ");
+  if(arg==NULL)
     cpu_exec(1);
   else{
-    cpu_exec(string2num(args));
+    int num=string2num(arg);
+    if(num==-1) printf("unvalid command!\n");
+    else cpu_exec(num);
   }
   return 0;
 }
