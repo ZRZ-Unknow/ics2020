@@ -4,7 +4,10 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  return 0;
+  char *p=s;
+  int count=0;
+  while(*(p++)!='/0') count++;
+  return count;
 }
 
 char *strcpy(char* dst,const char* src) {

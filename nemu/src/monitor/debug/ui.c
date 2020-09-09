@@ -59,9 +59,14 @@ static struct {
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
+static int string2num(char *args){
+  int n=strlen(args);
+  printf("%d\n",n);
+  return 0;
+}
+
 static int cmd_si(char *args){
-  int n=*args-'0';
-  printf("%d",n);
+  string2num(args);
   return 0;
 }
 
