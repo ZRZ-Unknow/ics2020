@@ -38,6 +38,10 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int cmd_si(char *args);
+//static int cmd_info(char *args);
+//static int cmd_x(char *args);
+
 
 static struct {
   char *name;
@@ -47,12 +51,18 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "single step",cmd_si},
+  //{ "info r","print register's status",cmd_info},
+  //{ "x","scan memory",cmd_x},
   /* TODO: Add more commands */
-
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+
+static int cmd_si(char *args){
+  printf(args);
+  return 0;
+}
 
 static int cmd_help(char *args) {
   /* extract the first argument */
