@@ -78,7 +78,7 @@ static int cmd_x(char *args){
   if(strncmp(arg,"0x",2)==0){
     paddr_t base_addr=strtol(arg,NULL,16);
     for(int i=0;i<n;i++){
-      printf("0x%x ",paddr_read(base_addr+4*i,4));
+      printf(i==(n-1)?"0x%x\n":"0x%x ",paddr_read(base_addr+4*i,4));
     }
   }
   else printf("invalid command!\n");
