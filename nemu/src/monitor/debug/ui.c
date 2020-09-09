@@ -72,7 +72,10 @@ static int string2num(const char *arg){
 static int cmd_x(char *args){
   char *arg=strtok(NULL," ");
   int n=string2num(arg);
-  if(n==-1||n==0) printf("invalid command!\n");
+  if(n==-1||n==0){
+    printf("invalid command!\n");
+    return 0;
+  }
   arg=strtok(NULL," ");
   if(arg==NULL) printf("invalid command!\n");
   else{
