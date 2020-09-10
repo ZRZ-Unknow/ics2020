@@ -41,6 +41,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
+static int cmd_p(char *args);
 
 static struct {
   char *name;
@@ -53,6 +54,7 @@ static struct {
   { "si", "single step",cmd_si},
   { "info", "print register's status",cmd_info},
   { "x", "scan memory",cmd_x},
+  { "p", "calculate expression",cmd_p},
   /* TODO: Add more commands */
 };
 
@@ -68,6 +70,13 @@ static int string2num(const char *arg){
     num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
   }
   return num;
+}
+static int cmd_p(char *args){
+  bool success=false;
+  uint32_t res=expr(args,&success);
+  if(success) printf("%d\n",res);
+  else printf("fail\n");
+  return 0;
 }
 static int cmd_x(char *args){
   char *arg=strtok(NULL," ");
