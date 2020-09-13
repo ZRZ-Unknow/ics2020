@@ -10,17 +10,25 @@ enum {
   /* TODO: Add more token types */
 };
 
-int op_priority[14];
+static struct op_priority{
+  int type[2];
+  int num;
+} opp[] = {
+  {{TK_POINT,-1},1},
+  {{'*','/'},2},
+  {{'+','-'},2},
+  {{TK_EQ,TK_NEQ},2},
+  {{TK_AND,-1},1},
+};
+#define NR_OPP (sizeof(opp) / sizeof(opp[0]) )
 
 static struct rule {
   char *regex;
   int token_type;
 } rules[] = {
-
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
   {" +", TK_NOTYPE},    // spaces
   {"0x[0-9a-fA-F]+", TK_SNUM}, //16进制
   {"[0-9]+",TK_NUM},   // number
@@ -69,7 +77,7 @@ typedef struct maintoken{
   char str[4];
 } MainToken;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[64] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 static int pare_check = 0;
 
@@ -101,9 +109,7 @@ static bool make_token(char *e) {
           case TK_NOTYPE : continue;
           case '(' : {pare_check++;break;}
           case ')' : {pare_check--;break;}
-          case TK_NEG : {
-            rules[i].token_type='+';
-          }
+          case TK_NEG : {rules[i].token_type='+';break;}
         }
         if(pare_check<0){
           Log("invalid parenthese!\n");
@@ -134,10 +140,21 @@ static bool check_parentheses(int p,int q){
   return false;
 }
 
+static int priority_cmp(int p,int q){
+  int p_index=-1,q_index=-1;
+  for(int i=0;i<NR_OPP;i++){
+    for(int j=0;j<opp[i].num;j++){
+      if(tokens[p].type==opp[i].type[j]) p_index=i;
+      if(tokens[q].type==opp[i].type[j]) q_index=i;
+    }
+  }
+  return (p_index==q_index)?0:((p_index<q_index)?-1:1);
+}
+
 static int find_main_operator(int p,int q){
   int point=-1;
   for(int i=p;i<=q;i++){
-    if(tokens[i].type==TK_NUM) continue;
+    if(tokens[i].type==TK_NUM || tokens[i].type==TK_SNUM || tokens[i].type==TK_REG) continue;
     if(tokens[i].type=='('){
       int tmp=i+1;
       if(tokens[tmp].type==')') return -1;
@@ -145,6 +162,12 @@ static int find_main_operator(int p,int q){
       i=tmp;
       continue;
     }
+    if(point==-1){
+      point=i;
+      continue;
+    }
+    if(priority_cmp(point,i)<=0) point=i;
+    /*
     if(tokens[i].type=='+' || tokens[i].type=='-') point=i;
     if(tokens[i].type=='*' || tokens[i].type=='/'){
       if(point==-1 || (tokens[point].type!='+' && tokens[point].type!='-')){
@@ -155,7 +178,7 @@ static int find_main_operator(int p,int q){
       if(point==-1 || (tokens[point].type==TK_EQ)){
         point=i;
       }
-    }
+    }*/
   }
   return point;
 }
@@ -203,6 +226,8 @@ static int eval(int p,int q,bool *success){
       return eval(p,point-1,success)/res;
     }
     case TK_EQ: return eval(p,point-1,success)==eval(point+1,q,success);
+    case TK_NEQ: return eval(p,point-1,success)!=eval(point+1,q,success);
+    case TK_AND: return eval(p,point-1,success)&&eval(point+1,q,success); 
     default: Assert(0,"eval failed");
     }
   }
