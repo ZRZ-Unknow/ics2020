@@ -22,7 +22,7 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"0x^[0-9]*", TK_SNUM}, //16进制
+  {"0x[0-9]*", TK_SNUM}, //16进制
   {"^[0-9]*",TK_NUM},   // number
   {"$^[a-z]*", TK_REG},   // register
   {"--",TK_NEG},        // divide a negative num
