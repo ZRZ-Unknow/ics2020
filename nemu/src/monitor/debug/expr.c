@@ -160,7 +160,7 @@ static int find_main_operator(int p,int q){
       point=i;
       continue;
     }
-    if(priority_cmp(point,i)<=0) point=i;
+    if(priority_cmp(point,i)>=0) point=i;
     /*
     if(tokens[i].type=='+' || tokens[i].type=='-') point=i;
     if(tokens[i].type=='*' || tokens[i].type=='/'){
@@ -229,7 +229,7 @@ static int eval(int p,int q,bool *success){
     }
     case TK_EQ: return eval(p,point-1,success)==eval(point+1,q,success);
     case TK_NEQ: return eval(p,point-1,success)!=eval(point+1,q,success);
-    case TK_AND: return eval(p,point-1,success)&&eval(point+1,q,success); 
+    case TK_AND: return eval(p,point-1,success)&&eval(point+1,q,success);
     default: Assert(0,"eval failed");
     }
   }
