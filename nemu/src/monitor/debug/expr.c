@@ -6,11 +6,11 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,  TK_NUM, TK_NEG, 
-
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_NUM, TK_NEG, TK_AND, TK_POINT, TK_REG, TK_SNUM,
   /* TODO: Add more token types */
-
 };
+
+int op_priority[14];
 
 static struct rule {
   char *regex;
@@ -22,15 +22,19 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"==", TK_EQ},        // equal
-  {"\\*", '*'},         // multiply
-  {"/",'/'},            // divide
+  {"0x^[0-9]*", TK_SNUM}, //16进制
+  {"^[0-9]*",TK_NUM},   // number
+  {"$^[a-z]*", TK_REG},   // register
   {"--",TK_NEG},        // divide a negative num
-  {"-",'-'},            // sub
   {"\\(",'('},          // left parentheses 
   {"\\)",')'},          // right parentheses
-  {"^[0-9]*",TK_NUM},   // number
+  {"\\*", '*'},         // multiply or point
+  {"/",'/'},            // divide
+  {"\\+", '+'},         // plus
+  {"-",'-'},            // sub
+  {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},       // not equal
+  {"&&", TK_AND},       // && 
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
