@@ -74,8 +74,8 @@ static int string2num(const char *arg){
 static int cmd_p(char *args){
   bool success=false;
   uint32_t res=expr(args,&success);
-  if(success) printf("%d\n",res);
-  else printf("\033[1;31mResult:%d\033[0m\n",res);
+  if(success) printf("\033[1;31mResult:%d\033[0m\n",res);
+  else printf("\033[1;31mFail to calculate!\033[0m\n");
   return 0;
 }
 static int cmd_x(char *args){
