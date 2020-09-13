@@ -116,6 +116,7 @@ static bool make_token(char *e) {
   }
   if(pare_check!=0){
     printf("invalid parenthese!\n");
+    pare_check=0;
     return false;
   }
   return true;
