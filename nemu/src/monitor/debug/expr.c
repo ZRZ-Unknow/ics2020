@@ -24,7 +24,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"0x[0-9a-fA-F]+", TK_SNUM}, //16进制
   {"[0-9]+",TK_NUM},   // number
-  {"\\$[a-z]+", TK_REG},   // register
+  {"\\$[a-z]{2,3}", TK_REG},   // register
   {"--",TK_NEG},        // divide a negative num
   {"\\(",'('},          // left parentheses 
   {"\\)",')'},          // right parentheses
