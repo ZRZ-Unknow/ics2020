@@ -11,10 +11,17 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char* dst,const char* src) {
+  strncpy(dst,src,strlen(src));
   return NULL;
 }
 
 char* strncpy(char* dst, const char* src, size_t n) {
+  char *p1=dst;
+  char *p2=src;
+  for(int i=0;i<n;i++){
+    *p1=*p2;
+    if(*p2=='\0') break;
+  }
   return NULL;
 }
 
