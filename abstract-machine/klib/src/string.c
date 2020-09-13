@@ -11,8 +11,7 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char* dst,const char* src) {
-  strncpy(dst,src,strlen(src));
-  return NULL;
+  return strncpy(dst,src,strlen(src));
 }
 
 char* strncpy(char* dst, const char* src, size_t n) {
@@ -22,7 +21,7 @@ char* strncpy(char* dst, const char* src, size_t n) {
     *p1=*p2;
     if(*p2=='\0') break;
   }
-  return NULL;
+  return dst;
 }
 
 char* strcat(char* dst, const char* src) {
