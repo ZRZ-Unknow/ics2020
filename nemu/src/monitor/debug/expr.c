@@ -99,7 +99,7 @@ static bool make_token(char *e) {
           case ')' : {pare_check--;break;}
         }
         if(pare_check<0){
-          printf("invalid parenthese!\n");
+          Log("invalid parenthese!\n");
           return false;
         }
         tokens[nr_token].type=rules[i].token_type;
@@ -115,7 +115,7 @@ static bool make_token(char *e) {
     }
   }
   if(pare_check!=0){
-    printf("invalid parenthese!\n");
+    Log("invalid parenthese!\n");
     pare_check=0;
     return false;
   }
