@@ -48,14 +48,20 @@ void isa_reg_display() {
   for(int i=0;i<8;i++){
     printf("%s:0x%x\n",regsw[i],cpu.gpr[i]._16);
   }
-  for(int i=0;i<4;i++){
-    printf("%s:0x%x\n",regsb[i],cpu.gpr[i]._8[0]);
-  }
-  for(int i=0;i<4;i++){
-    printf("%s:0x%x\n",regsb[i],cpu.gpr[i]._8[1]);
+  for(int i=0;i<8;i++){
+    printf("%s:0x%x\n",regsb[i],(i<4)?cpu.gpr[i]._8[0]:cpu.gpr[i]._8[1]);
   }
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
+  for(int i=0;i<8;i++){
+    if(strcmp(s,regsl[i])==0) return cpu.gpr[i]._32;
+  }
+  for(int i=0;i<8;i++){
+    if(strcmp(s,regsw[i])==0) return cpu.gpr[i]._16;
+  }
+  for(int i=0;i<8;i++){
+    if(strcmp(s,regsb[i])==0) return (i<4)?cpu.gpr[i]._8[0]:cpu.gpr[i]._8[1];
+  }
   return 0;
 }
