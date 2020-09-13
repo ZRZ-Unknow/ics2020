@@ -143,7 +143,6 @@ int check_watchpoint(){
     bool succ=true;
     p->new_v=expr(p->content,&succ);
     if(p->new_v!=p->old_v){
-      p->old_v=p->new_v;
       return p->NO;
     }
     p=p->next;
