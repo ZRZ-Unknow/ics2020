@@ -4,6 +4,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <memory/paddr.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_NUM, TK_NEG, TK_AND, TK_POINT, TK_REG, TK_SNUM,
@@ -160,7 +161,7 @@ static int find_main_operator(int p,int q){
       point=i;
       continue;
     }
-    if(priority_cmp(point,i)>=0) point=i;
+    if(priority_cmp(point,i)<=0) point=i;
     /*
     if(tokens[i].type=='+' || tokens[i].type=='-') point=i;
     if(tokens[i].type=='*' || tokens[i].type=='/'){
@@ -200,7 +201,6 @@ static int eval(int p,int q,bool *success){
     case TK_NUM: return string2num(&tokens[p].str[0]);
     case TK_NEG: return (-string2num(&tokens[p].str[1]));
     case TK_SNUM: return -1;
-    case TK_POINT: return -1;
     case TK_REG: return -1;
     default: return -1;
     }
@@ -230,6 +230,7 @@ static int eval(int p,int q,bool *success){
     case TK_EQ: return eval(p,point-1,success)==eval(point+1,q,success);
     case TK_NEQ: return eval(p,point-1,success)!=eval(point+1,q,success);
     case TK_AND: return eval(p,point-1,success)&&eval(point+1,q,success);
+    case TK_POINT: return paddr_read((uint32_t)eval(point+1,q,success),sizeof(uint32_t));
     default: Assert(0,"eval failed");
     }
   }
