@@ -24,13 +24,13 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
-  {"\\*", '*'},
-  {"/",'/'},
-  {"--",TK_NEG},
-  {"-",'-'},
-  {"\\(",')'},
-  {"\\)",')'},
-  {"^[0-9]*",TK_NUM},
+  {"\\*", '*'},         // multiply
+  {"/",'/'},            // divide
+  {"--",TK_NEG},        // divide a negative num
+  {"-",'-'},            // sub
+  {"\\(",')'},          // left parentheses 
+  {"\\)",')'},          // right parentheses
+  {"^[0-9]*",TK_NUM},   // number
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -58,6 +58,12 @@ typedef struct token {
   int type;
   char str[32];
 } Token;
+
+typedef struct subexpr{
+  int type;
+  char str[32];
+  struct Subexpr *next;
+} Subexpr;
 
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
