@@ -6,7 +6,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,  TK_NUM, TK_NEG,
+  TK_NOTYPE = 256, TK_EQ,  TK_NUM, TK_NEG, 
 
   /* TODO: Add more token types */
 
@@ -122,6 +122,73 @@ static bool make_token(char *e) {
   return true;
 }
 
+static bool check_parentheses(int p,int q){
+  if(tokens[p].type=='(' && tokens[q].type==')') return true;
+  return false;
+}
+
+static int find_main_operator(int p,int q){
+  int point=-1;
+  for(int i=p;i<=q;i++){
+    if(tokens[i].type==TK_NUM) continue;
+    if(tokens[i].type=='('){
+      int tmp=i+1;
+      while(tokens[tmp].type!=')') tmp++;
+      i=tmp;
+      continue;
+    }
+    if(tokens[i].type=='+' || tokens[i].type=='-') point=i;
+    if(tokens[i].type=='*' || tokens[i].type=='/'){
+      if(point==-1 || (tokens[point].type!='+' && tokens[point].type!='-')){
+        point=i;
+      }
+    }
+    if(tokens[i].type==TK_EQ){
+      if(point==-1 || (tokens[point].type==TK_EQ)){
+        point=i;
+      }
+    }
+  }
+  return point;
+}
+
+static int string2num(const char *arg){
+  //convert a num_string to a real num: (char*)'76'->(int)76
+  char *args=(char *)arg;
+  int n=strlen(args);
+  int num=0;
+  for(int i=n;i>0;i--){
+    if(*args<'0'||*args>'9') return -1;
+    num+= (i==1)?(*(args++)-'0'):(*(args++)-'0')*10*(i-1);
+  }
+  return num;
+}
+
+static int eval(int p,int q){
+  if (p>q){
+    return -1;
+  }
+  else if (p==q){
+    return string2num(&tokens[p].str[0]);
+  }
+  else if (check_parentheses(p,q)==true){
+    return eval(p+1,q-1);
+  }
+  else{
+    int point=find_main_operator(p,q);
+    assert(point!=-1);
+    switch (tokens[point].type)
+    {
+    case '+': return eval(p,point-1)+eval(point+1,q);
+    case '-': return eval(p,point-1)-eval(point+1,q);
+    case '*': return eval(p,point-1)*eval(point+1,q);
+    case '/': return eval(p,point-1)/eval(point+1,q);
+    case TK_EQ: return eval(p,point-1)==eval(point+1,q);
+    default: assert(0);
+    }
+  }
+  return 0;
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -132,10 +199,10 @@ word_t expr(char *e, bool *success) {
   for(int i=0;i<nr_token;i++){
     printf("%s ",tokens[i].str);
   }
-  printf(" :%d\n",pare_check);
   pare_check=0;
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-
+  int res = eval(0,nr_token-1);
+  printf("result:%d\n",res);
   return 0;
 }
