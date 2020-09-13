@@ -133,6 +133,7 @@ static int find_main_operator(int p,int q){
     if(tokens[i].type==TK_NUM) continue;
     if(tokens[i].type=='('){
       int tmp=i+1;
+      if(tokens[tmp].type==')') return -1;
       while(tokens[tmp].type!=')') tmp++;
       i=tmp;
       continue;
@@ -164,27 +165,31 @@ static int string2num(const char *arg){
   return num;
 }
 
-static int eval(int p,int q){
+static int eval(int p,int q,bool *success){
   if (p>q){
+    *success=false;
     return -1;
   }
   else if (p==q){
     return string2num(&tokens[p].str[0]);
   }
   else if (check_parentheses(p,q)==true){
-    return eval(p+1,q-1);
+    return eval(p+1,q-1,success);
   }
   else{
     int point=find_main_operator(p,q);
-    assert(point!=-1);
+    if(point==-1){
+      *success=false;
+      return -1;
+    }
     switch (tokens[point].type)
     {
-    case '+': return eval(p,point-1)+eval(point+1,q);
-    case '-': return eval(p,point-1)-eval(point+1,q);
-    case '*': return eval(p,point-1)*eval(point+1,q);
-    case '/': return eval(p,point-1)/eval(point+1,q);
-    case TK_EQ: return eval(p,point-1)==eval(point+1,q);
-    default: assert(0);
+    case '+': return eval(p,point-1,success)+eval(point+1,q,success);
+    case '-': return eval(p,point-1,success)-eval(point+1,q,success);
+    case '*': return eval(p,point-1,success)*eval(point+1,q,success);
+    case '/': return eval(p,point-1,success)/eval(point+1,q,success);
+    case TK_EQ: return eval(p,point-1,success)==eval(point+1,q,success);
+    default: Assert(0,"eval failed");
     }
   }
   return 0;
@@ -199,5 +204,5 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   *success=true;
-  return eval(0,nr_token-1);
+  return eval(0,nr_token-1,success);
 }
