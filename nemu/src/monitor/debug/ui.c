@@ -75,7 +75,7 @@ static int cmd_p(char *args){
   bool success=false;
   uint32_t res=expr(args,&success);
   if(success) printf("%d\n",res);
-  else printf("fail\n");
+  else printf("\033[1;31mResult:%d\033[0m\n",res);
   return 0;
 }
 static int cmd_x(char *args){

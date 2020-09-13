@@ -198,7 +198,6 @@ word_t expr(char *e, bool *success) {
   pare_check=0;
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  int res = eval(0,nr_token-1);
-  printf("\033[1;31m    Result : %d\033[0m\n",res);
-  return 0;
+  *success=true;
+  return eval(0,nr_token-1);
 }
