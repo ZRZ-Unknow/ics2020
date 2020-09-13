@@ -190,7 +190,14 @@ static int eval(int p,int q,bool *success){
     case '+': return eval(p,point-1,success)+eval(point+1,q,success);
     case '-': return eval(p,point-1,success)-eval(point+1,q,success);
     case '*': return eval(p,point-1,success)*eval(point+1,q,success);
-    case '/': return eval(p,point-1,success)/eval(point+1,q,success);
+    case '/': {
+      int res=eval(point+1,q,success);
+      if(res==0){
+        *success=false;
+        return -1;
+      }
+      return eval(p,point-1,success)/res;
+    }
     case TK_EQ: return eval(p,point-1,success)==eval(point+1,q,success);
     default: Assert(0,"eval failed");
     }
