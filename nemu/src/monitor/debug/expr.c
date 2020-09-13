@@ -95,8 +95,12 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_NOTYPE : continue;
-          case '(' : {pare_check++;printf("(");break;}
-          case ')' : {pare_check--;printf(")");break;}
+          case '(' : {pare_check++;break;}
+          case ')' : {pare_check--;break;}
+        }
+        if(pare_check<0){
+          printf("invalid parenthese!\n");
+          return false;
         }
         tokens[nr_token].type=rules[i].token_type;
         strncpy(tokens[nr_token].str,substr_start,substr_len);
@@ -123,7 +127,7 @@ word_t expr(char *e, bool *success) {
   for(int i=0;i<nr_token;i++){
     printf("%s ",tokens[i].str);
   }
-  printf(" %d\n",pare_check);
+  printf(" :%d\n",pare_check);
   pare_check=0;
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
