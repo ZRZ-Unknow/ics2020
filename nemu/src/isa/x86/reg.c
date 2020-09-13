@@ -54,21 +54,18 @@ void isa_reg_display() {
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-  printf("%s\n",s);
   for(int i=0;i<8;i++){
-    if(strcmp(s,regsl[i])==0) {
-      printf("d\n");
+    if(strncmp(s,regsl[i],3)==0) {
       return cpu.gpr[i]._32;
     }
   }
   for(int i=0;i<8;i++){
-    if(strcmp(s,regsw[i])==0){
-      printf("c\n");
+    if(strncmp(s,regsw[i],2)==0){
       return cpu.gpr[i]._16;
     }
   }
   for(int i=0;i<8;i++){
-    if(strcmp(s,regsb[i])==0) return (i<4)?cpu.gpr[i]._8[0]:cpu.gpr[i]._8[1];
+    if(strncmp(s,regsb[i],2)==0) return (i<4)?cpu.gpr[i]._8[0]:cpu.gpr[i]._8[1];
   }
   *success=false;
   return 0;
