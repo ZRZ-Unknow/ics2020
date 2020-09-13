@@ -1,5 +1,6 @@
 #include <isa.h>
 #include <monitor/monitor.h>
+#include "debug/watchpoint.h"
 #include <monitor/difftest.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -89,6 +90,15 @@ void cpu_exec(uint64_t n) {
     asm_print(this_pc, seq_pc - this_pc, n < MAX_INSTR_TO_PRINT);
 
     /* TODO: check watchpoints here. */
+    int no=check_watchpoint();
+    if(no!=-1){
+      WP *p=no_to_wp(no);
+      printf("trigger watchpoint %d\n",no);
+      printf("expression:%s\n",p->content);
+      printf("old value:%#x\n",p->old_v);
+      printf("new value:%#x\n",p->new_v);
+      nemu_state.state=NEMU_STOP;  
+    }
 #endif
 
 #ifdef HAS_IOE

@@ -34,39 +34,41 @@ WP* new_wp(){
     head=p;
     return head;
   }
-  else {assert(0);}
+  else assert(0);
 }
 
 void in_free_wp(int no){
-  if(head==NULL){return;}
+  if(head==NULL) return;
   if(head->NO==no){
-     WP *p=head;
-     head=head->next;
-     p->next=free_;
-     free_=p;
-     return;
+    WP *p=head;
+    head=head->next;
+    p->next=free_;
+    free_=p;
+    return;
   }
   WP *p=head;
   while(p!=NULL){
-    	  if(p->NO==no){break;}
-     	  p=p->next;
+    if(p->NO==no) break;
+    p=p->next;
   }
-  if (p==NULL){return;}
+  if (p==NULL) return;
   if (p->NO==no){
-     	  WP *q=head;
-     	  while(q->next!=p){
-	   	  q=q->next;
-     	  }
-     	  q->next=p->next;
-     	  p->next=free_;
-     	  free_=p;
-     	  return;
+    WP *q=head;
+    while(q->next!=p) q=q->next;
+    q->next=p->next;
+    p->next=free_;
+    free_=p;
+    return;
   }
-  else {assert(0);}
+  else assert(0);
   return;
 }
+
 void free_wp(int no){
-  if(head==NULL){printf("no watchpoint to delete\n");return;}
+  if(head==NULL) {
+    printf("no watchpoint to delete\n");
+    return;
+  }
   if(head->NO==no){
     WP *p=head;
     head=head->next;
@@ -77,22 +79,23 @@ void free_wp(int no){
   }
   WP *p=head;
   while(p!=NULL){
-    if(p->NO==no){break;}
+    if(p->NO==no) break;
     p=p->next;
   }
-  if (p==NULL){printf("have no watchpoint %d\n",no);return;}
+  if (p==NULL){
+    printf("have no watchpoint %d\n",no);
+    return;
+  }
   if (p->NO==no){
     WP *q=head;
-    while(q->next!=p){
-      q=q->next;
-    }
+    while(q->next!=p) q=q->next;
     q->next=p->next;
     p->next=free_;
     free_=p;
     printf("delete watchpoint %d\n",no);
     return;
   }
-  else {assert(0);}
+  else assert(0);
   return;
 }
 
@@ -122,11 +125,11 @@ void view_watchpoint(){
 }
 
 WP *no_to_wp(int no){  
-  if (no<0){return NULL;}
+  if (no<0) return NULL;
   else {
     WP *p=head;
     while(p!=NULL){
-      if (p->NO==no){return p;}
+      if (p->NO==no) return p;
       p=p->next;
     }
     printf("watchpoint %d not exit\n",no);
@@ -134,7 +137,7 @@ WP *no_to_wp(int no){
   }
 }
 
-int check__watchpoint(){
+int check_watchpoint(){
   WP *p=head;
   while(p!=NULL){
     bool succ=true;
