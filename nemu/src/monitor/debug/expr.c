@@ -59,14 +59,15 @@ typedef struct token {
   char str[32];
 } Token;
 
-typedef struct subexpr{
+typedef struct maintoken{
   int type;
-  char str[32];
-  struct Subexpr *next;
-} Subexpr;
+  int len;
+  char str[4];
+} MainToken;
 
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
+static int pare_check = 0;
 
 static bool make_token(char *e) {
   int position = 0;
@@ -93,7 +94,13 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          //default: TODO();
+          case '(' : pare_check++;
+          case ')' : pare_check--;
+          default: {
+            tokens[nr_token].type=rules[i].token_type;
+            strncpy(tokens[nr_token].str,substr_start,substr_len);
+            break;
+          }
         }
 
         break;
@@ -115,7 +122,11 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+  for(int i=0;i<nr_token;i++){
+    printf("%s ",tokens[i].str);
+  }
+  printf(" %d\n",pare_check);
+  pare_check=0;
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
 
