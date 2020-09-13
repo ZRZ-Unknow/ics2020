@@ -28,7 +28,7 @@ static struct rule {
   {"/",'/'},            // divide
   {"--",TK_NEG},        // divide a negative num
   {"-",'-'},            // sub
-  {"\\(",')'},          // left parentheses 
+  {"\\(",'('},          // left parentheses 
   {"\\)",')'},          // right parentheses
   {"^[0-9]*",TK_NUM},   // number
 };
