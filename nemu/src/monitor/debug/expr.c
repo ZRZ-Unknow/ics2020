@@ -104,7 +104,6 @@ static bool make_token(char *e) {
           case TK_NOTYPE : continue;
           case '(' : {pare_check++;break;}
           case ')' : {pare_check--;break;}
-          //case TK_NEG : {rules[i].token_type='+';break;}
         }
         if(pare_check<0){
           Log("invalid parenthese!\n");
@@ -112,7 +111,7 @@ static bool make_token(char *e) {
         }
         tokens[nr_token].type=rules[i].token_type;
         strncpy(tokens[nr_token].str,substr_start,substr_len);
-        printf("%s\n",tokens[nr_token].str);
+        printf("%s,%s\n",tokens[nr_token].str,substr_start);
         nr_token++;
         break;
       }
