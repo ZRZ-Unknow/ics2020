@@ -114,7 +114,10 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+  if(pare_check!=0){
+    printf("invalid parenthese!\n");
+    return false;
+  }
   return true;
 }
 
@@ -124,6 +127,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+
   for(int i=0;i<nr_token;i++){
     printf("%s ",tokens[i].str);
   }
