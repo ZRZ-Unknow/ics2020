@@ -42,6 +42,8 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   char *name;
@@ -55,6 +57,8 @@ static struct {
   { "info", "print register's status",cmd_info},
   { "x", "scan memory",cmd_x},
   { "p", "calculate expression",cmd_p},
+  { "w","Set watchpoint",cmd_w},
+  { "d","Delete watchpoint",cmd_d},
   /* TODO: Add more commands */
 };
 
@@ -71,6 +75,20 @@ static int string2num(const char *arg){
   }
   return num;
 }
+
+static int cmd_w(char *args){
+  set_watchpoint(args);
+  return 0;
+}
+
+static int cmd_d(char *args){
+  char *ch=strtok(args," ");
+  int number=atoi(ch);
+  if(number<0){printf("input an nonnegative integer");return 0;}
+  else {free_wp(number);}
+  return 0;
+}
+
 static int cmd_p(char *args){
   bool success=false;
   uint32_t res=expr(args,&success);
@@ -78,6 +96,7 @@ static int cmd_p(char *args){
   else printf("\033[1;31mFail to calculate!\033[0m\n");
   return 0;
 }
+
 static int cmd_x(char *args){
   char *arg=strtok(NULL," ");
   int n=string2num(arg);

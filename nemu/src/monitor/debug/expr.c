@@ -161,18 +161,6 @@ static int find_main_operator(int p,int q){
       continue;
     }
     if(priority_cmp(point,i)<=0) point=i;
-    /*
-    if(tokens[i].type=='+' || tokens[i].type=='-') point=i;
-    if(tokens[i].type=='*' || tokens[i].type=='/'){
-      if(point==-1 || (tokens[point].type!='+' && tokens[point].type!='-')){
-        point=i;
-      }
-    }
-    if(tokens[i].type==TK_EQ){
-      if(point==-1 || (tokens[point].type==TK_EQ)){
-        point=i;
-      }
-    }*/
   }
   return point;
 }
