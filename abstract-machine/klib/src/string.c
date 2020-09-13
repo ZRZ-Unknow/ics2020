@@ -6,7 +6,7 @@
 size_t strlen(const char *s) {
   char *p=s;
   int count=0;
-  while(*(p++)!='/0') count++;
+  while(*(p++)!='\0') count++;
   return count;
 }
 
@@ -15,11 +15,9 @@ char *strcpy(char* dst,const char* src) {
 }
 
 char* strncpy(char* dst, const char* src, size_t n) {
-  /*size_t i;
-  for (i = 0; i < n && src[i] != '/0'; i++) dst[i] = src[i];
-  for ( ; i < n; i++) dst[i] = '/0';
-  if(*dst=='a') assert(strlen(dst)==2);
-  assert(0);*/
+  size_t i;
+  for (i = 0; i < n && src[i] != '\0'; i++) dst[i] = src[i];
+  for ( ; i < n; i++) dst[i] = '\0';
   return dst;
   /*char *p1=dst;
   char *p2=src;
@@ -37,7 +35,7 @@ char* strcat(char* dst, const char* src) {
 int strcmp(const char* s1, const char* s2) {
   char *ss1=s1;
   char *ss2=s2;
-  while(*ss1!='/0' && *ss2!='/0'){
+  while(*ss1!='\0' && *ss2!='\0'){
     if(*(ss1++)!=*(ss2++)) return -1;
   }
   return 0;
@@ -47,10 +45,10 @@ int strncmp(const char* s1, const char* s2, size_t n) {
   char *ss1=s1;
   char *ss2=s2;
   for(int i=0;i<n;i++){
-    if(*ss1!='/0' && *ss2!='/0'){
+    if(*ss1!='\0' && *ss2!='\0'){
       if(*(ss1++)!=*(ss2++)) return -1;
     }
-    else if(*ss1=='/0' && *ss2=='/0') break;
+    else if(*ss1=='\0' && *ss2=='\0') break;
     else return -1;
   }
   return 0;
