@@ -189,7 +189,7 @@ static int string2num(const char *arg){
   return num;
 }
 
-static int eval(int p,int q,bool *success){
+static uint32_t eval(int p,int q,bool *success){
   if (p>q){
     *success=false;
     return -1;
@@ -201,7 +201,7 @@ static int eval(int p,int q,bool *success){
     case TK_NEG: return (-string2num(&tokens[p].str[1]));
     case TK_REG: return isa_reg_str2val(&tokens[p].str[1],success);
     case TK_SNUM: {
-      int res;
+      uint32_t res;
       sscanf(&tokens[p].str[0],"%x",&res);
       return res;
     }
