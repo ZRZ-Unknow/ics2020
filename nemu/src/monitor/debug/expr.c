@@ -71,12 +71,6 @@ typedef struct token {
   char str[32];
 } Token;
 
-typedef struct maintoken{
-  int type;
-  int len;
-  char str[4];
-} MainToken;
-
 static Token tokens[64] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 static int pare_check = 0;
@@ -242,6 +236,16 @@ word_t expr(char *e, bool *success) {
   pare_check=0;
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
+  for(int i = 0; i < nr_token; i++) {
+    if (tokens[i].type == '*' && (i==0 || tokens[i-1].type=='*' || tokens[i-1].type=='/'
+                                       || tokens[i-1].type=='+' || tokens[i-1].type=='-'
+                                       || tokens[i-1].type==TK_EQ || tokens[i-1].type==TK_NEQ
+                                       || tokens[i-1].type==TK_AND) ) {
+      tokens[i].type = TK_POINT;
+      Log("token %d set to TK_POINT",i);
+    }
+  }
+
   *success=true;
   return eval(0,nr_token-1,success);
 }
