@@ -97,6 +97,9 @@ static bool make_token(char *e) {
           case TK_NOTYPE : continue;
           case '(' : {pare_check++;break;}
           case ')' : {pare_check--;break;}
+          case TK_NEG : {
+            rules[i].token_type='+';
+          }
         }
         if(pare_check<0){
           Log("invalid parenthese!\n");
