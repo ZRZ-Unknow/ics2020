@@ -195,7 +195,15 @@ static int eval(int p,int q,bool *success){
     return -1;
   }
   else if (p==q){
-    return string2num(&tokens[p].str[0]);
+    switch (tokens[p].type)
+    {
+    case TK_NUM: return string2num(&tokens[p].str[0]);
+    case TK_NEG: return (-string2num(&tokens[p].str[1]));
+    case TK_SNUM: return -1;
+    case TK_POINT: return -1;
+    case TK_REG: return -1;
+    default: return -1;
+    }
   }
   else if (check_parentheses(p,q)==true){
     return eval(p+1,q-1,success);
