@@ -33,7 +33,7 @@ static struct rule {
   {"0x[0-9a-fA-F]+", TK_SNUM}, //16进制
   {"[0-9]+",TK_NUM},   // number
   {"\\$[a-z]{2,3}", TK_REG},   // register
-  {"--",TK_NEG},        // divide a negative num
+  {"-[0-9]+",TK_NEG},        // divide a negative num
   {"\\(",'('},          // left parentheses 
   {"\\)",')'},          // right parentheses
   {"\\*", '*'},         // multiply or point
@@ -103,7 +103,7 @@ static bool make_token(char *e) {
           case TK_NOTYPE : continue;
           case '(' : {pare_check++;break;}
           case ')' : {pare_check--;break;}
-          case TK_NEG : {rules[i].token_type='+';break;}
+          //case TK_NEG : {rules[i].token_type='+';break;}
         }
         if(pare_check<0){
           Log("invalid parenthese!\n");
@@ -148,7 +148,7 @@ static int priority_cmp(int p,int q){
 static int find_main_operator(int p,int q){
   int point=-1;
   for(int i=p;i<=q;i++){
-    if(tokens[i].type==TK_NUM || tokens[i].type==TK_SNUM || tokens[i].type==TK_REG) continue;
+    if(tokens[i].type==TK_NUM || tokens[i].type==TK_NEG || tokens[i].type==TK_SNUM || tokens[i].type==TK_REG) continue;
     if(tokens[i].type=='('){
       int tmp=i+1;
       if(tokens[tmp].type==')') return -1;
